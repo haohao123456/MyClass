@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
         boolean once=true;
 //        int[][] position =new int[x][y];
         final String[]name={"秦浩","王冠","舒键","耿良均","周东旗",
-                "陈飚","季昌文","杨开宇","陆贝石","宋新宝","郑钧",
+                "陈飙","季昌文","杨开宇","陆贝石","宋新宝","郑钧",
                 "余钢","张磊","高亚会","田华清",
                 "施支唐","郭欢欢","韦阳","刘欢","赵健","梁东杰",
                 "余海霞"+"\t","李悦"+"\t","王婷"+"\t","陈佳"+"\t",
