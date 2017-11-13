@@ -1,9 +1,13 @@
 package szxy.com.myclass;
 
+import android.content.Intent;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import static szxy.com.myclass.R.layout;
 
@@ -52,12 +56,16 @@ public class MainActivity extends AppCompatActivity {
     private Button btn_40;
 
 
+
     //    TextView tv= new TextView(this);
 //    Button btn=new Button(this);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(layout.activity_main);
+
+
+
         btn_teacher = (Button) findViewById(R.id.btn_teacher);
         btn_01 = (Button) findViewById(R.id.btn_01);
         btn_02 = (Button) findViewById(R.id.btn_02);
@@ -109,19 +117,19 @@ public class MainActivity extends AppCompatActivity {
                       btn_36,btn_37,btn_38,btn_39,btn_40};
         int x=5;
         int y=8;
-        int z=1;
-        int[] arr=ran();
-        int c=0;
+        final int[] z = {0};
+        final int[] arr=ran();
+       final int[] c = {0};
         boolean once=true;
 //        int[][] position =new int[x][y];
         final String[]name={"秦浩","王冠","舒键","耿良均","周东旗",
                 "陈飙","季昌文","杨开宇","陆贝石","宋新宝","郑钧",
                 "余钢","张磊","高亚会","田华清",
                 "施支唐","郭欢欢","韦阳","刘欢","赵健","梁东杰",
-                "余海霞"+"\t","李悦"+"\t","王婷"+"\t","陈佳"+"\t",
-                "吴晨晨"+"\t","陈振"+"\t","赵梦茹"+"\t","刘童"+"\t","魏莹"+"\t",
-                "管琦"+"\t","刘影"+"\t","吴珍"+"\t","张叶"+"\t","左莉莉"+"\t","闻宇霆"+"\t",
-                "李美琴"+"\t","凌倩"+"\t","刘欢欢"+"\t","张静"+"\t"};
+                "\t"+"余海霞"+"\t","\t"+"李悦"+"\t","\t"+"王婷"+"\t","\t"+"陈佳"+"\t",
+                "\t"+"吴晨晨"+"\t","\t"+"陈振"+"\t","\t"+"赵梦茹"+"\t","\t"+"刘童"+"\t","\t"+"魏莹"+"\t",
+                "\t"+"管琦"+"\t","\t"+"刘影"+"\t","\t"+"吴珍"+"\t","\t"+"张叶"+"\t","\t"+"左莉莉"+"\t","\t"+"闻宇霆"+"\t",
+                "\t"+"李美琴"+"\t","\t"+"凌倩"+"\t","\t"+"刘欢欢"+"\t","\t"+"张静"+"\t"};
 
         for (int i = 0; i < 8; i++) {
             if (once) {
@@ -132,23 +140,78 @@ public class MainActivity extends AppCompatActivity {
             }
             System.out.println();
             for (int j = 0; j < 5; j++) {
-                z=arr[c];//生成40以内的唯一的不重复的随机数
-//                z=(int) (Math.random()*40);
-                final int cc=c++;
-                if (name[arr[z]].contains("\t")) {
-                    btn[cc].setText(name[arr[z]]+"\t");
-                    btn[cc].setTextColor(Color.WHITE);
-                    btn[cc].setBackgroundColor(Color.parseColor("#FF4081"));
-                }
-                else {
-                    btn[cc].setText(name[arr[z]]+"\t");
-                    btn[cc].setBackgroundColor(Color.parseColor("#4488FF"));
-                }
+//                z[0] =arr[c[0]];//生成40以内的唯一的不重复的随机数
+
+//                final int cc= c[0]++;
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        z[0] =arr[c[0]];//生成40以内的唯一的不重复的随机数
+                        final int cc= c[0]++;
+                        if (name[arr[z[0]]].contains("\t")) {
+                            btn[cc].setText(name[arr[z[0]]]+"\t");
+                            btn[cc].setTextColor(Color.WHITE);
+                            btn[cc].setBackgroundColor(Color.parseColor("#FF4081"));
+                        }
+                        else {
+                            btn[cc].setText(name[arr[z[0]]]+"\t");
+                            btn[cc].setBackgroundColor(Color.parseColor("#4488FF"));
+                        }
+                    }
+                });
+//                if (name[arr[z[0]]].contains("\t")) {
+//                    btn[cc].setText(name[arr[z[0]]]+"\t");
+//                    btn[cc].setTextColor(Color.WHITE);
+//                    btn[cc].setBackgroundColor(Color.parseColor("#FF4081"));
+//                }
+//                else {
+//                    btn[cc].setText(name[arr[z[0]]]+"\t");
+//                    btn[cc].setBackgroundColor(Color.parseColor("#4488FF"));
+//                }
+
+
+                btn[39].setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent=new Intent(MainActivity.this,Main2Activity.class);
+                        startActivity(intent);
+                    }
+                });
             }
         }
     }
 
-    public static  int[] ran(){
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+    }
+    private long exitTime = 0;
+
+    @Override
+    public void onBackPressed() {
+//        重写onBackPressed()方法。
+//        判断时间间隔，两次返回间隔2000值， 超出2000，弹出提示，低于2000，就退出应用。
+
+        if (System.currentTimeMillis() - exitTime > 2000) {
+            Toast.makeText(this, "再按一次Goodbye~", Toast.LENGTH_SHORT).show();
+            MediaPlayer mediaPlayer01;
+
+            mediaPlayer01 = MediaPlayer.create(MainActivity.this,R.raw.excelent );
+
+//            mediaPlayer01.start();
+
+            exitTime = System.currentTimeMillis();
+        } else {
+            finish();     //结束当前activity。
+            System.exit(0); //退出Java程序
+            android.os.Process.killProcess(android.os.Process.myPid());  //退出安卓进程。
+        }
+    }
+
+//生成40个40以内的不重复的整数数组，用于调用40个姓名
+     public static  int[] ran(){
         int []a=new int  [40];
         m: for(int i=0;i<40;i++)
         {
